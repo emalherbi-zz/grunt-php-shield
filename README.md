@@ -121,4 +121,5 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-06   v0.1.1   Update readme. <br/>
 2014-10-06   v0.1.2   Update readme, add break line. <br/>
 2014-10-06   v0.1.3   Update readme. <br/>
-2014-10-06   v0.1.4   Add dependencies. <br/>
+2014-10-07   v0.1.4   Add dependencies. <br/>
+2014-10-07   v0.1.5   Update devDependencies. <br/>
