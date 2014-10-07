@@ -98,8 +98,8 @@ A string value that is used to report E_STRICT compiling errors.
 
 ### Usage Examples
 
-[1] - Sometimes is necessary to use a real path on your destination for phpShield.
-[2] - This package only encryption files not copy. So use [grunt-contrib-copy](http://gruntjs.com/) to copy all files to encrypt.
+[1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
+[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
 
 ```js
 grunt.initConfig({
@@ -151,3 +151,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-07   v0.1.5   Update devDependencies. <br/>
 2014-10-07   v0.1.6   Update dependencies. <br/>
 2014-10-07   v0.1.7   Update readme, add usage. <br/>
+2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
