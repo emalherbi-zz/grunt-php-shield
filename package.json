@@ -1,7 +1,7 @@
 {
   "name": "grunt-php-shield",
   "description": "Build automatic php shield",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "homepage": "https://github.com/emalherbi/grunt-php-shield",
   "author": {
     "name": "Eduardo Malherbi Martins",
@@ -41,6 +41,10 @@
     "grunt": "~0.4.5"
   },
   "keywords": [
-    "gruntplugin"
+    "gruntplugin",
+    "php",
+    "phpShield",
+    "shield",
+    "crypto"
   ]
 }
