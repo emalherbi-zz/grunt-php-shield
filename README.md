@@ -49,49 +49,49 @@ grunt.initConfig({
 ### Options
 
 #### options.path_exe
-Type: `String`
+Type: `String` <br/>
 Default value: ``
 
 A string value that is used to especific path .exe.
 
 #### options.log
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to enabled log.
 
 #### options.V4
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to enabled compiling php version 4.
 
 #### options.V5_0
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to enabled compiling php version 5.0.
 
 #### options.V5_2
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to enabled compiling php version 5.2.
 
 #### options.V5_3
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to enabled compiling php version 5.3.
 
 #### options.stop_on_error
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to stop on script compiling errors.
 
 #### options.strict_errors
-Type: `Boolean`
+Type: `Boolean` <br/>
 Default value: `true`
 
 A string value that is used to report E_STRICT compiling errors.
@@ -119,3 +119,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 2014-10-06   v0.1.1   Update readme.
+2014-10-06   v0.1.2   Update readme, add break line.
