@@ -52,7 +52,8 @@ module.exports = function(grunt) {
           V5_2 : true,
           V5_3 : true,
           stop_on_error : true,
-          strict_errors : true
+          strict_errors : true,
+          base64 : true
         },
         files: [{
           src: ['**'],

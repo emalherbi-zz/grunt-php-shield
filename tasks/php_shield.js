@@ -10,7 +10,9 @@
 
 var path  = require("path");
 var cmd = require("cmd-exec").init();
-// var cmd = require("C:\\Users\\XPert Eduardo\\AppData\\Roaming\\npm\\node_modules\\cmd-exec").init();
+
+var getBase64 = require('atob');
+var setBase64 = require('btoa');
 
 module.exports = function(grunt) {
 
@@ -21,6 +23,12 @@ module.exports = function(grunt) {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
+      /* Base64 */
+      base64 : false,
+      randomI : 2,
+      randomF : 3,
+
+      /* PhpShield */
       path_exe : '',
       log : true,
       V4 : true,
@@ -43,6 +51,16 @@ module.exports = function(grunt) {
       // log grunt
       function writeln(str) {
         grunt.log.writeln(str);
+      }
+
+      // encode files
+      function encode(str) {
+        return setBase64( str );
+      }
+
+      // decode files
+      function decode(str) {
+        return getBase64( str );
       }
 
       // Function to get the extension a filename
@@ -77,13 +95,25 @@ module.exports = function(grunt) {
       }).map(function (filename) {
         if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
           php_list_encoder.push( f.dest + separator + filename );
+
+          var file = grunt.file.read(f.dest + separator + filename);
+
+          file = file.replace('/^\<\?(php)*/', '');
+          file = file.replace('/\?\>$/', '');
+          file = file.replace(['\"','$','"'], ['\\\"','\$','\"']);
+          file = file.trim();
+          file = encode(file);
+          file = "<?php $code = base64_decode('" + file + "'); eval(\"return eval(\"$code\");\") ?>\n";
+
+          grunt.file.write(f.dest + separator + filename, file);
         }
 
         if ( options.log ) {
-          writeln( f.dest + separator + filename );
+          // writeln( f.dest + separator + filename );
         }
       });
 
+      /*
       // only windows
       grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
 
@@ -109,6 +139,7 @@ module.exports = function(grunt) {
           writeln(res.message);
         }
       });
+      */
 
       // Write the destination file.
       grunt.file.write(f.dest+separator+'default', true);
