@@ -198,3 +198,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-07   v0.1.6   Update dependencies. <br/>
 2014-10-07   v0.1.7   Update readme, add usage. <br/>
 2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
+2014-10-13   v0.1.9   Add base64 encryption. <br/>
