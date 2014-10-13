@@ -25,8 +25,6 @@ module.exports = function(grunt) {
     var options = this.options({
       /* Base64 */
       base64 : false,
-      randomI : 2,
-      randomF : 3,
 
       /* PhpShield */
       path_exe : '',
@@ -69,77 +67,99 @@ module.exports = function(grunt) {
         return ext[ext.length - 1];
       }
 
+      function phpShield() {
+        var php_list_encoder = [];
+        src.map(function (filename) {
+          if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
+            php_list_encoder.push( f.dest + separator + filename );
+          }
+
+          if ( options.log ) {
+            writeln( f.dest + separator + filename );
+          }
+        });
+
+        // only windows
+        grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
+
+        var V4   = (options.V4  ) ? '-V4'   : '';
+        var V5_0 = (options.V5_0) ? '-V5.0' : '';
+        var V5_2 = (options.V5_2) ? '-V5.2' : '';
+        var V5_3 = (options.V5_3) ? '-V5.3' : '';
+
+        var stop_on_error = (options.stop_on_error) ? '--stop-on-error' : '';
+        var strict_errors = (options.strict_errors) ? '--strict-errors' : '';
+
+        // exec cmd command phpShield
+        var command = options.path_exe+separator+'phpshield.exe '+strict_errors+' '+stop_on_error+' '+V4+' '+V5_0+' '+V5_2+' '+V5_3+' -b- @"'+options.path_exe+separator+'encodeShield"';
+
+        if ( options.log ) {
+          writeln( command );
+        }
+
+        cmd.exec(command, function(err, res) {
+          if (err) {
+            grunt.log.warn('Error: ' + err.message);
+          } else {
+            writeln(res.message);
+          }
+        });
+      }
+
+      function phpBase64() {
+        src.map(function (filename) {
+          if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
+            var file = grunt.file.read(f.dest + separator + filename);
+            file = encode(file);
+
+            var tmp = "";
+            tmp += "<?php \n";
+            tmp += "$tmp=base64_decode('" + file + "'); \n";
+            tmp += "$tmp=preg_replace('/[\\n\\t\\s]+/',' ',$tmp); \n";
+            tmp += "$tmp=preg_replace('/^\\<\\?(php)*/','',$tmp); \n";
+            tmp += "$tmp=preg_replace('/\\?\\>$/','',$tmp); \n";
+            tmp += "$tmp=str_replace(array('\\\"','$','\"'),array('\\\\\\\"','\\$','\\\"'),$tmp); \n";
+            tmp += "$tmp=trim($tmp); \n";
+            tmp += "@eval(@eval($tmp)); \n";
+
+            grunt.file.write(f.dest + separator + filename, tmp);
+          }
+
+          if ( options.log ) {
+            writeln( f.dest + separator + filename );
+          }
+        });
+      }
+
+      // return not defined
+      if ( options.path_exe === '' && options.base64 === false ) {
+        grunt.log.warn('The path_exe or base64 are not defined! Please defined one option.');
+        return false;
+      }
+
       writeln('-----------------------------');
       writeln('--                         --');
       writeln('-- Start Module PhpShield! --');
       writeln('--                         --');
       writeln('-----------------------------');
 
-      // return if phpShieldExe not defined
-      if ( options.path_exe === '' ) {
-        grunt.log.warn('Path phpShield exe not defined!');
-        return false;
-      }
-
       // Concat specified files.
       var separator = '/';
-      var php_list_encoder = [];
       var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
         if (!grunt.file.exists(cwd + separator + filepath)) {
           grunt.log.warn('Source file "' + cwd + separator + filepath + '" not found.');
           return false;
         } else {
           return true;
         }
-      }).map(function (filename) {
-        if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
-          php_list_encoder.push( f.dest + separator + filename );
-
-          var file = grunt.file.read(f.dest + separator + filename);
-
-          file = file.replace('/^\<\?(php)*/', '');
-          file = file.replace('/\?\>$/', '');
-          file = file.replace(['\"','$','"'], ['\\\"','\$','\"']);
-          file = file.trim();
-          file = encode(file);
-          file = "<?php $code = base64_decode('" + file + "'); eval(\"return eval(\"$code\");\") ?>\n";
-
-          grunt.file.write(f.dest + separator + filename, file);
-        }
-
-        if ( options.log ) {
-          // writeln( f.dest + separator + filename );
-        }
       });
 
-      /*
-      // only windows
-      grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
-
-      var V4   = (options.V4  ) ? '-V4'   : '';
-      var V5_0 = (options.V5_0) ? '-V5.0' : '';
-      var V5_2 = (options.V5_2) ? '-V5.2' : '';
-      var V5_3 = (options.V5_3) ? '-V5.3' : '';
-
-      var stop_on_error = (options.stop_on_error) ? '--stop-on-error' : '';
-      var strict_errors = (options.strict_errors) ? '--strict-errors' : '';
-
-      // exec cmd command phpShield
-      var command = options.path_exe+separator+'phpshield.exe '+strict_errors+' '+stop_on_error+' '+V4+' '+V5_0+' '+V5_2+' '+V5_3+' -b- @"'+options.path_exe+separator+'encodeShield"';
-
-      if ( options.log ) {
-        writeln( command );
+      if ( options.base64 ) {
+        phpBase64();
       }
-
-      cmd.exec(command, function(err, res) {
-        if (err) {
-          grunt.log.warn('Error: ' + err.message);
-        } else {
-          writeln(res.message);
-        }
-      });
-      */
+      else {
+        phpShield();
+      }
 
       // Write the destination file.
       grunt.file.write(f.dest+separator+'default', true);

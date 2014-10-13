@@ -45,6 +45,8 @@ module.exports = function(grunt) {
     php_shield: {
       crypto: {
         options: {
+          base64: true,
+
           path_exe: 'D:\\PHPShield\\encoder',
           log : true,
           V4 : false,
@@ -52,8 +54,7 @@ module.exports = function(grunt) {
           V5_2 : true,
           V5_3 : true,
           stop_on_error : true,
-          strict_errors : true,
-          base64 : true
+          strict_errors : true
         },
         files: [{
           src: ['**'],
