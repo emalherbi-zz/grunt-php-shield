@@ -27,16 +27,7 @@ grunt.initConfig({
   php_shield: {
     crypto: {
       options: {
-        base64: false, // change here if you use encryption base64
-
-        path_exe: 'D:\\PHPShield\\encoder',
-        log : true,
-        V4 : false,
-        V5_0 : true,
-        V5_2 : true,
-        V5_3 : true,
-        stop_on_error : false,
-        strict_errors : false
+        ...
       },
       files: [{
         src: ['**'],
@@ -199,3 +190,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-07   v0.1.7   Update readme, add usage. <br/>
 2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
 2014-10-13   v0.1.9   Add base64 encryption. <br/>
+2014-10-13   v0.2.0   Update readme. <br/>
