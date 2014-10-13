@@ -1,6 +1,6 @@
 # grunt-php-shield
 
-> Build automatic phpShield
+> Build automatic phpShield or encrypt your files in base 64!
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -27,6 +27,8 @@ grunt.initConfig({
   php_shield: {
     crypto: {
       options: {
+        base64: false, // change here if you use encryption base64
+
         path_exe: 'D:\\PHPShield\\encoder',
         log : true,
         V4 : false,
@@ -48,6 +50,12 @@ grunt.initConfig({
 
 ### Options
 
+#### options.base64
+Type: `Boolean` <br/>
+Default value: `false`
+
+A Boolean value that is used to especific if it is base64 encryption.
+
 #### options.path_exe
 Type: `String` <br/>
 Default value: ``
@@ -58,45 +66,47 @@ A string value that is used to especific path .exe.
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to enabled log.
+A Boolean value that is used to enabled log.
 
 #### options.V4
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to enabled compiling php version 4.
+A Boolean value that is used to enabled compiling php version 4.
 
 #### options.V5_0
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to enabled compiling php version 5.0.
+A Boolean value that is used to enabled compiling php version 5.0.
 
 #### options.V5_2
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to enabled compiling php version 5.2.
+A Boolean value that is used to enabled compiling php version 5.2.
 
 #### options.V5_3
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to enabled compiling php version 5.3.
+A Boolean value that is used to enabled compiling php version 5.3.
 
 #### options.stop_on_error
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to stop on script compiling errors.
+A Boolean value that is used to stop on script compiling errors.
 
 #### options.strict_errors
 Type: `Boolean` <br/>
 Default value: `true`
 
-A string value that is used to report E_STRICT compiling errors.
+A Boolean value that is used to report E_STRICT compiling errors.
 
 ### Usage Examples
+
+##### If you have installed [phpSHIELD](http://www.phpshield.com/) <br />
 
 [1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
 [2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
@@ -132,6 +142,42 @@ grunt.initConfig({
         files: [{
           src: ['**'],
           dest: 'D:\\www\\tmp\\app', // [1]
+          cwd: 'test/fixtures/app'
+        }]
+      }
+    }
+
+});
+```
+
+##### If you prefer to use base64 encryption of files <br />
+
+[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
+
+```js
+grunt.initConfig({
+
+    // [2]
+    copy: {
+      main: {
+        files: [{
+          expand: true,
+          dot: true,
+          dest: 'tmp/app',
+          cwd: 'test/fixtures/app',
+          src: ['**']
+        }]
+      }
+    },
+
+    php_shield: {
+      crypto: {
+        options: {
+          base64: true
+        },
+        files: [{
+          src: ['**'],
+          dest: 'tmp/app',
           cwd: 'test/fixtures/app'
         }]
       }
