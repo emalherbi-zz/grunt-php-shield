@@ -9,8 +9,9 @@
 'use strict';
 
 var path = require("path");
-var cmd = require("cmd-exec").init();
+var rimraf = require('rimraf');
 var setBase64 = require('btoa');
+var cmd = require("cmd-exec").init();
 
 module.exports = function(grunt) {
 
@@ -55,6 +56,54 @@ module.exports = function(grunt) {
         grunt.log.write(str);
       }
 
+      // Validate if one option is defined.
+      function validateOptionDefined() {
+        if ( options.log ) {
+          writeln('--> VALIDATE IF ONE OPTION IS DEFINED!');
+        }
+
+        if ( options.path_exe === '' && options.base64 === false ) {
+          grunt.log.warn('The path_exe or base64 are not defined! Please defined one option.');
+          return false;
+        }
+
+        return true;
+      }
+
+      // Validate if files exist.
+      function validateFilesExist() {
+        if ( options.log ) {
+          writeln('--> VALIDATE IF FILES EXIST!');
+        }
+
+        return src = f.src.filter(function(filename) {
+          if (!grunt.file.exists(cwd + separator + filename)) {
+            grunt.log.warn('Source file "' + cwd + separator + filename + '" not found.');
+            return false;
+          }
+
+          return true;
+        });
+      }
+
+      // clear dest
+      function clear() {
+        try {
+          writeln('-- CLEAR DEST -> ' + f.dest);
+
+          rimraf.sync( f.dest );
+        } catch (e) {
+          grunt.log.error();
+          grunt.fail.warn('Unable to delete: "' + f.dest + '" file (' + e.message + ').', e);
+        }
+      }
+
+      // Function to get the extension a filename
+      function getExtension(filename) {
+        var ext = path.extname(filename || '').split('.');
+        return ext[ext.length - 1];
+      }
+
       // encode files
       function encode(str, levelStart, levelEnd) {
         var level = 0;
@@ -65,7 +114,7 @@ module.exports = function(grunt) {
         }
 
         if ( options.log ) {
-          writeln( "Random: " + level + "x");
+          write( "Random: " + level + "x" + " ");
         }
 
         if ( options.log ) {
@@ -88,17 +137,17 @@ module.exports = function(grunt) {
         return str;
       }
 
-      // Function to get the extension a filename
-      function getExtension(filename) {
-        var ext = path.extname(filename || '').split('.');
-        return ext[ext.length - 1];
-      }
-
       function phpShield() {
         var php_list_encoder = [];
         src.map(function (filename) {
-          if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
-            php_list_encoder.push( f.dest + separator + filename );
+          if (grunt.file.isDir(cwd + separator + filename)) {
+            grunt.file.mkdir( f.dest + separator + filename );
+          } else {
+            grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
+
+            if ('php' === getExtension(cwd + separator + filename)) {
+              php_list_encoder.push( f.dest + separator + filename );
+            }
           }
 
           if ( options.log ) {
@@ -135,33 +184,26 @@ module.exports = function(grunt) {
 
       function phpBase64() {
         src.map(function (filename) {
-          if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
-            //var file = grunt.file.read(f.dest + separator + filename);
-            //file = encode(file);
+          if (grunt.file.isDir(cwd + separator + filename)) {
+            grunt.file.mkdir( f.dest + separator + filename );
+          } else {
+            if ('php' === getExtension(cwd + separator + filename)) {
+              var tmp = grunt.file.read(cwd + separator + filename);
+              tmp = tmp.replace("<?php", "");
+              tmp = tmp.replace("<?", "");
+              tmp = tmp.replace("?>", "");
+              tmp = encode(tmp, options.encodingLevelStart, options.encodingLevelEnd);
 
-            //var tmp = "";
-            //tmp += "<?php \n";
-            //tmp += "$tmp=base64_decode('" + file + "'); \n";
-            //tmp += "$tmp=preg_replace('/[\\n\\t\\s]+/',' ',$tmp); \n";
-            //tmp += "$tmp=preg_replace('/^\\<\\?(php)*/','',$tmp); \n";
-            //tmp += "$tmp=preg_replace('/\\?\\>$/','',$tmp); \n";
-            //tmp += "$tmp=str_replace(array('\\\"','$','\"'),array('\\\\\\\"','\\$','\\\"'),$tmp); \n";
-            //tmp += "$tmp=trim($tmp); \n";
-            //tmp += "@eval(@eval($tmp)); \n";
+              var file = "<?php";
+              file += "\r\n";
+              file += tmp;
+              file += "\r\n";
+              file += "?>";
 
-            var tmp = grunt.file.read(f.dest + separator + filename);
-            tmp = tmp.replace("<?php", "");
-            tmp = tmp.replace("<?", "");
-            tmp = tmp.replace("?>", "");
-            tmp = encode(tmp, options.encodingLevelStart, options.encodingLevelEnd);
-
-            var file = "<?php";
-            file += "\r\n";
-            file += tmp;
-            file += "\r\n";
-            file += "?>";
-
-            grunt.file.write(f.dest + separator + filename, file);
+              grunt.file.write(f.dest + separator + filename, file);
+            } else {
+              grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
+            }
           }
 
           if ( options.log ) {
@@ -170,29 +212,23 @@ module.exports = function(grunt) {
         });
       }
 
-      // return not defined
-      if ( options.path_exe === '' && options.base64 === false ) {
-        grunt.log.warn('The path_exe or base64 are not defined! Please defined one option.');
-        return false;
-      }
-
       writeln('-----------------------------');
       writeln('--                         --');
       writeln('-- Start Module PhpShield! --');
       writeln('--                         --');
       writeln('-----------------------------');
 
-      // Concat specified files.
       var separator = '/';
-      var src = f.src.filter(function(filepath) {
-        if (!grunt.file.exists(cwd + separator + filepath)) {
-          grunt.log.warn('Source file "' + cwd + separator + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      });
+      var src = null;
 
+      if (!validateOptionDefined()) {
+        return false;
+      }
+      if (!validateFilesExist()) {
+        return false;
+      }
+
+      clear();
       if ( options.base64 ) {
         phpBase64();
       }

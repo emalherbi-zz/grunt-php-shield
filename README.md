@@ -41,25 +41,12 @@ grunt.initConfig({
 
 ### Usage Examples
 
-##### If you prefer to use base64 encryption of files <br />
+> Now! This package clear dest, copy files and encryption.
 
-[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
+##### Encryption your files in base64 <br />
 
 ```js
 grunt.initConfig({
-
-    // [2]
-    copy: {
-      main: {
-        files: [{
-          expand: true,
-          dot: true,
-          dest: 'tmp/app',
-          cwd: 'test/fixtures/app',
-          src: ['**']
-        }]
-      }
-    },
 
     php_shield: {
       crypto: {
@@ -80,26 +67,12 @@ grunt.initConfig({
 });
 ```
 
-##### If you have installed [phpSHIELD](http://www.phpshield.com/) <br />
+##### Or use [phpSHIELD](http://www.phpshield.com/) <br />
 
 [1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
-[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
 
 ```js
 grunt.initConfig({
-
-    // [2]
-    copy: {
-      main: {
-        files: [{
-          expand: true,
-          dot: true,
-          dest: 'tmp/app',
-          cwd: 'test/fixtures/app',
-          src: ['**']
-        }]
-      }
-    },
 
     php_shield: {
       crypto: {
@@ -211,3 +184,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-13   v0.1.9   Add base64 encryption. <br/>
 2014-10-13   v0.2.0   Update readme. <br/>
 2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
+2014-10-15   v0.2.2   Clear Dir, Copy Files. <br/>
