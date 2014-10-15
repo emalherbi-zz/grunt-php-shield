@@ -210,4 +210,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
 2014-10-13   v0.1.9   Add base64 encryption. <br/>
 2014-10-13   v0.2.0   Update readme. <br/>
-2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
+2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
