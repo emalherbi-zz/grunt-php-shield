@@ -8,10 +8,8 @@
 
 'use strict';
 
-var path  = require("path");
+var path = require("path");
 var cmd = require("cmd-exec").init();
-
-var getBase64 = require('atob');
 var setBase64 = require('btoa');
 
 module.exports = function(grunt) {
@@ -88,11 +86,6 @@ module.exports = function(grunt) {
         }
 
         return str;
-      }
-
-      // decode files
-      function decode(str) {
-        return getBase64( str );
       }
 
       // Function to get the extension a filename

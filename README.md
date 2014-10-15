@@ -39,63 +39,46 @@ grunt.initConfig({
 });
 ```
 
-### Options
-
-#### options.base64
-Type: `Boolean` <br/>
-Default value: `false`
-
-A Boolean value that is used to especific if it is base64 encryption.
-
-#### options.path_exe
-Type: `String` <br/>
-Default value: ``
-
-A string value that is used to especific path .exe.
-
-#### options.log
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to enabled log.
-
-#### options.V4
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to enabled compiling php version 4.
-
-#### options.V5_0
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to enabled compiling php version 5.0.
-
-#### options.V5_2
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to enabled compiling php version 5.2.
-
-#### options.V5_3
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to enabled compiling php version 5.3.
-
-#### options.stop_on_error
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to stop on script compiling errors.
-
-#### options.strict_errors
-Type: `Boolean` <br/>
-Default value: `true`
-
-A Boolean value that is used to report E_STRICT compiling errors.
-
 ### Usage Examples
+
+##### If you prefer to use base64 encryption of files <br />
+
+[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
+
+```js
+grunt.initConfig({
+
+    // [2]
+    copy: {
+      main: {
+        files: [{
+          expand: true,
+          dot: true,
+          dest: 'tmp/app',
+          cwd: 'test/fixtures/app',
+          src: ['**']
+        }]
+      }
+    },
+
+    php_shield: {
+      crypto: {
+        options: {
+          log : true,
+          base64 : true,
+          encodingLevelStart : 7,
+          encodingLevelEnd : 13
+        },
+        files: [{
+          src: ['**'],
+          dest: 'tmp/app',
+          cwd: 'test/fixtures/app'
+        }]
+      }
+    }
+
+});
+```
 
 ##### If you have installed [phpSHIELD](http://www.phpshield.com/) <br />
 
@@ -141,41 +124,77 @@ grunt.initConfig({
 });
 ```
 
-##### If you prefer to use base64 encryption of files <br />
+### Options
 
-[2] - This package only encryption files not copy. So use [grunt-contrib-copy](https://www.npmjs.org/package/grunt-contrib-copy) to copy all files to encrypt.
+#### options.log
+Type: `Boolean` <br/>
+Default value: `true`
 
-```js
-grunt.initConfig({
+A Boolean value that is used to enabled log.
 
-    // [2]
-    copy: {
-      main: {
-        files: [{
-          expand: true,
-          dot: true,
-          dest: 'tmp/app',
-          cwd: 'test/fixtures/app',
-          src: ['**']
-        }]
-      }
-    },
+### Options (Base64)
 
-    php_shield: {
-      crypto: {
-        options: {
-          base64: true
-        },
-        files: [{
-          src: ['**'],
-          dest: 'tmp/app',
-          cwd: 'test/fixtures/app'
-        }]
-      }
-    }
+#### options.base64
+Type: `Boolean` <br/>
+Default value: `false`
 
-});
-```
+A Boolean value that is used to especific if it is base64 encryption.
+
+#### options.encodingLevelStart
+Type: `Number` <br/>
+Default value: 0
+
+A Number value that is used to especific how often the encryption will be made.
+
+#### options.encodingLevelEnd
+Type: `Number` <br/>
+Default value: 0
+
+A Number value that is used to especific how often the encryption will be made.
+
+### Options (PhpShield)
+
+#### options.path_exe
+Type: `String` <br/>
+Default value: ``
+
+A string value that is used to especific path .exe.
+
+#### options.V4
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 4.
+
+#### options.V5_0
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.0.
+
+#### options.V5_2
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.2.
+
+#### options.V5_3
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.3.
+
+#### options.stop_on_error
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to stop on script compiling errors.
+
+#### options.strict_errors
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to report E_STRICT compiling errors.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
@@ -191,3 +210,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
 2014-10-13   v0.1.9   Add base64 encryption. <br/>
 2014-10-13   v0.2.0   Update readme. <br/>
+2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
