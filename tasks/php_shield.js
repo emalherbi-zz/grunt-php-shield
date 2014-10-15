@@ -23,12 +23,15 @@ module.exports = function(grunt) {
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
+      log : true,
+
       /* Base64 */
       base64 : false,
+      encodingLevelStart : 0,
+      encodingLevelEnd : 0,
 
       /* PhpShield */
       path_exe : '',
-      log : true,
       V4 : true,
       V5_0 : true,
       V5_2 : true,
@@ -50,10 +53,41 @@ module.exports = function(grunt) {
       function writeln(str) {
         grunt.log.writeln(str);
       }
+      function write(str) {
+        grunt.log.write(str);
+      }
 
       // encode files
-      function encode(str) {
-        return setBase64( str );
+      function encode(str, levelStart, levelEnd) {
+        var level = 0;
+        if ( levelStart === 0 || levelEnd === 0 ) {
+          level = Math.floor((Math.random() * 10) + 1);
+        } else {
+          level = Math.floor(Math.random() * (levelEnd - levelStart)) + levelStart;
+        }
+
+        if ( options.log ) {
+          writeln( "Random: " + level + "x");
+        }
+
+        if ( options.log ) {
+          write( '[' );
+        }
+
+        for (var i=0; i<level; i++) {
+            str = setBase64(str);
+            str = 'eval(base64_decode("' + str + '"));';
+
+            if ( options.log ) {
+              write( '=' );
+            }
+        }
+
+        if ( options.log ) {
+          writeln( ']' );
+        }
+
+        return str;
       }
 
       // decode files
@@ -109,20 +143,32 @@ module.exports = function(grunt) {
       function phpBase64() {
         src.map(function (filename) {
           if (!grunt.file.isDir(cwd + separator + filename) && ('php' === getExtension(cwd + separator + filename))) {
-            var file = grunt.file.read(f.dest + separator + filename);
-            file = encode(file);
+            //var file = grunt.file.read(f.dest + separator + filename);
+            //file = encode(file);
 
-            var tmp = "";
-            tmp += "<?php \n";
-            tmp += "$tmp=base64_decode('" + file + "'); \n";
-            tmp += "$tmp=preg_replace('/[\\n\\t\\s]+/',' ',$tmp); \n";
-            tmp += "$tmp=preg_replace('/^\\<\\?(php)*/','',$tmp); \n";
-            tmp += "$tmp=preg_replace('/\\?\\>$/','',$tmp); \n";
-            tmp += "$tmp=str_replace(array('\\\"','$','\"'),array('\\\\\\\"','\\$','\\\"'),$tmp); \n";
-            tmp += "$tmp=trim($tmp); \n";
-            tmp += "@eval(@eval($tmp)); \n";
+            //var tmp = "";
+            //tmp += "<?php \n";
+            //tmp += "$tmp=base64_decode('" + file + "'); \n";
+            //tmp += "$tmp=preg_replace('/[\\n\\t\\s]+/',' ',$tmp); \n";
+            //tmp += "$tmp=preg_replace('/^\\<\\?(php)*/','',$tmp); \n";
+            //tmp += "$tmp=preg_replace('/\\?\\>$/','',$tmp); \n";
+            //tmp += "$tmp=str_replace(array('\\\"','$','\"'),array('\\\\\\\"','\\$','\\\"'),$tmp); \n";
+            //tmp += "$tmp=trim($tmp); \n";
+            //tmp += "@eval(@eval($tmp)); \n";
 
-            grunt.file.write(f.dest + separator + filename, tmp);
+            var tmp = grunt.file.read(f.dest + separator + filename);
+            tmp = tmp.replace("<?php", "");
+            tmp = tmp.replace("<?", "");
+            tmp = tmp.replace("?>", "");
+            tmp = encode(tmp, options.encodingLevelStart, options.encodingLevelEnd);
+
+            var file = "<?php";
+            file += "\r\n";
+            file += tmp;
+            file += "\r\n";
+            file += "?>";
+
+            grunt.file.write(f.dest + separator + filename, file);
           }
 
           if ( options.log ) {
