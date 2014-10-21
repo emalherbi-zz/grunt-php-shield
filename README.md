@@ -53,8 +53,9 @@ grunt.initConfig({
         options: {
           log : true,
           base64 : true,
-          encodingLevelStart : 7,
-          encodingLevelEnd : 13
+          encodingLevelStart : 2,
+          encodingLevelEnd : 5,
+          notEncode: [ 'css', 'js', 'img', 'view', 'config', 'index.php' ]
         },
         files: [{
           src: ['**'],
@@ -125,6 +126,12 @@ Default value: 0
 
 A Number value that is used to especific how often the encryption will be made.
 
+#### options.notEncode
+Type: `Array` <br/>
+Default value: null
+
+A Array value that is used to especific what's files/folders not encode.
+
 ### Options (PhpShield)
 
 #### options.path_exe
@@ -185,3 +192,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-13   v0.2.0   Update readme. <br/>
 2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
 2014-10-15   v0.2.2   Clear Dir, Copy Files. <br/>
+2014-10-21   v0.2.3   not Encode Files/Folders. <br/>

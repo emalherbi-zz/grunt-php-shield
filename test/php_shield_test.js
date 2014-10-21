@@ -30,8 +30,8 @@ exports.php_shield = {
   crypto: function(test) {
     test.expect(1);
 
-    var actual = grunt.file.read('tmp/app/default');
-    var expected = grunt.file.read('test/expected/app/default');
+    var actual = grunt.file.read('tmp/app/LICENSE-MIT');
+    var expected = grunt.file.read('test/expected/app/LICENSE-MIT');
     test.equal(actual, expected, 'should describe what the default behavior is.');
 
     test.done();

@@ -28,6 +28,7 @@ module.exports = function(grunt) {
       base64 : false,
       encodingLevelStart : 0,
       encodingLevelEnd : 0,
+      notEncode : null,
 
       /* PhpShield */
       path_exe : '',
@@ -143,7 +144,8 @@ module.exports = function(grunt) {
           if (grunt.file.isDir(cwd + separator + filename)) {
             grunt.file.mkdir( f.dest + separator + filename );
           } else {
-            grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
+            // grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
+            grunt.file.copy(cwd + separator + filename, f.dest + separator + filename);
 
             if ('php' === getExtension(cwd + separator + filename)) {
               php_list_encoder.push( f.dest + separator + filename );
@@ -188,21 +190,31 @@ module.exports = function(grunt) {
             grunt.file.mkdir( f.dest + separator + filename );
           } else {
             if ('php' === getExtension(cwd + separator + filename)) {
-              var tmp = grunt.file.read(cwd + separator + filename);
-              tmp = tmp.replace("<?php", "");
-              tmp = tmp.replace("<?", "");
-              tmp = tmp.replace("?>", "");
-              tmp = encode(tmp, options.encodingLevelStart, options.encodingLevelEnd);
+              var dir = cwd + separator + filename;
+              if ( dir.match( '(' + options.notEncode.join('|') + ')' ) ) {
+                if ( options.log ) {
+                  writeln( 'Not Encode => ' + dir );
+                }
 
-              var file = "<?php";
-              file += "\r\n";
-              file += tmp;
-              file += "\r\n";
-              file += "?>";
+                grunt.file.copy(dir, f.dest + separator + filename);
+              } else {
+                var tmp = grunt.file.read( dir );
+                tmp = tmp.replace("<?php", "");
+                tmp = tmp.replace("<?", "");
+                tmp = tmp.replace("?>", "");
+                tmp = encode(tmp, options.encodingLevelStart, options.encodingLevelEnd);
 
-              grunt.file.write(f.dest + separator + filename, file);
+                var file = "<?php";
+                file += "\r\n";
+                file += tmp;
+                file += "\r\n";
+                file += "?>";
+
+                grunt.file.write(f.dest + separator + filename, file);
+              }
             } else {
-              grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
+              grunt.file.copy(cwd + separator + filename, f.dest + separator + filename);
+              // grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
             }
           }
 
@@ -236,8 +248,31 @@ module.exports = function(grunt) {
         phpShield();
       }
 
+      var license = "Copyright (c) 2014 Eduardo Malherbi Martins\r\n\r\n";
+
+      license += "Permission is hereby granted, free of charge, to any person\r\n";
+      license += "obtaining a copy of this software and associated documentation\r\n";
+      license += "files (the \"Software\"), to deal in the Software without\r\n";
+      license += "restriction, including without limitation the rights to use,\r\n";
+      license += "copy, modify, merge, publish, distribute, sublicense, and/or sell\r\n";
+      license += "copies of the Software, and to permit persons to whom the\r\n";
+      license += "Software is furnished to do so, subject to the following\r\n";
+      license += "conditions:\r\n\r\n";
+
+      license += "The above copyright notice and this permission notice shall be\r\n";
+      license += "included in all copies or substantial portions of the Software.\r\n\r\n";
+
+      license += "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\r\n";
+      license += "EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES\r\n";
+      license += "OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND\r\n";
+      license += "NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT\r\n";
+      license += "HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\r\n";
+      license += "WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\r\n";
+      license += "FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR\r\n";
+      license += "OTHER DEALINGS IN THE SOFTWARE.\r\n";
+
       // Write the destination file.
-      grunt.file.write(f.dest+separator+'default', true);
+      grunt.file.write(f.dest+separator+'LICENSE-MIT', license);
 
       // Print a success message.
       grunt.log.writeln('Build Successful!');

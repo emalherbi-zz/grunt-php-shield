@@ -30,8 +30,9 @@ module.exports = function(grunt) {
           log : true,
 
           base64 : true,
-          encodingLevelStart : 7,
-          encodingLevelEnd : 13,
+          encodingLevelStart : 2,
+          encodingLevelEnd : 5,
+          notEncode: [ 'css', 'js', 'img', 'view', 'config', 'index.php' ],
 
           path_exe: 'D:\\PHPShield\\encoder',
           V4 : false,
