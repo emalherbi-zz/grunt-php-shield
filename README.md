@@ -193,3 +193,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
 2014-10-15   v0.2.2   Clear Dir, Copy Files. <br/>
 2014-10-21   v0.2.3   not Encode Files/Folders. <br/>
+2014-10-21   v0.2.4   Add JS Escape and chalk. <br/>
