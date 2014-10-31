@@ -10,8 +10,10 @@
 
 var path = require("path");
 var rimraf = require('rimraf');
-var setBase64 = require('btoa');
+var btoa = require('btoa');
 var cmd = require("cmd-exec").init();
+var querystring = require('querystring');
+var chalk = require('chalk');
 
 module.exports = function(grunt) {
 
@@ -90,7 +92,7 @@ module.exports = function(grunt) {
       // clear dest
       function clear() {
         try {
-          writeln('-- CLEAR DEST -> ' + f.dest);
+          writeln('--> CLEAR DEST -> ' + f.dest);
 
           rimraf.sync( f.dest );
         } catch (e) {
@@ -115,24 +117,29 @@ module.exports = function(grunt) {
         }
 
         if ( options.log ) {
-          write( "Random: " + level + "x" + " ");
+          write(chalk.bold.green("           => Random: " + level + "x" + " "));
         }
 
         if ( options.log ) {
-          write( '[' );
+          write(chalk.bold.green('['));
         }
 
         for (var i=0; i<level; i++) {
-            str = setBase64(str);
-            str = 'eval(base64_decode("' + str + '"));';
+            //** window.btoa(encodeURIComponent(escape( str )));
+            //** str = btoa(encodeURIComponent(querystring.escape(str)));
+            str = btoa(querystring.escape(str));
+
+            //** unescape(decodeURIComponent(window.atob( str )));
+            //** str = 'eval(extract(addslashes(urldecode(base64_decode("' + str + '")))), EXTR_SKIP);';
+            str = 'eval(urldecode(base64_decode("' + str + '")));';
 
             if ( options.log ) {
-              write( '=' );
+              write(chalk.bold.green('='));
             }
         }
 
         if ( options.log ) {
-          writeln( ']' );
+          writeln(chalk.bold.green(']'));
         }
 
         return str;
@@ -193,11 +200,15 @@ module.exports = function(grunt) {
               var dir = cwd + separator + filename;
               if ( dir.match( '(' + options.notEncode.join('|') + ')' ) ) {
                 if ( options.log ) {
-                  writeln( 'Not Encode => ' + dir );
+                  writeln(chalk.bold.red('Not Encode => ' + dir));
                 }
 
                 grunt.file.copy(dir, f.dest + separator + filename);
               } else {
+                if ( options.log ) {
+                  writeln(chalk.bold.green('    Encode => ' + dir));
+                }
+
                 var tmp = grunt.file.read( dir );
                 tmp = tmp.replace("<?php", "");
                 tmp = tmp.replace("<?", "");
@@ -216,10 +227,10 @@ module.exports = function(grunt) {
               grunt.file.copy(cwd + separator + filename, f.dest + separator + filename);
               // grunt.file.write(f.dest + separator + filename, grunt.file.read(cwd + separator + filename));
             }
-          }
 
-          if ( options.log ) {
-            writeln( f.dest + separator + filename );
+            if ( options.log ) {
+              writeln(chalk.white('      Copy => ' + f.dest + separator + filename));
+            }
           }
         });
       }
