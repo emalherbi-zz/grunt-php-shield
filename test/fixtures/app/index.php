@@ -1,5 +1,7 @@
 <?php
 
+date_default_timezone_set('America/Los_Angeles');
+
 // ************************************************
 // ** INIT ROUTER
 defined("DS") || define("DS", DIRECTORY_SEPARATOR);

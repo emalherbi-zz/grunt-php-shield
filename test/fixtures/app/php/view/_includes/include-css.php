@@ -1,6 +1,6 @@
 <!-- build:css css/app.min.css -->
-<link rel="stylesheet" href="../bower_components/normalize-css/normalize.css">
-<link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
+<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" >
 <link rel="stylesheet" href="css/bootstrap.docs.min.css">
 <link rel="stylesheet" href="css/browsehappy.css">
 <link rel="stylesheet" href="css/app-login.css">
