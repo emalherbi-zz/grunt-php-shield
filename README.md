@@ -4,7 +4,7 @@
 
 [![NPM](https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-php-shield/)
 
-Example: [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
+GitHub Page Example: [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
 
 # Getting Started
 
@@ -198,3 +198,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-21   v0.2.4   Add JS Escape and chalk. <br/>
 2014-10-21   v0.2.5   Using base64, add a trim on files encrypto <br/>
 2014-10-21   v0.2.6   Add a github page Example <br/>
+2014-10-21   v0.2.7   Add phpShield in github page Example <br/>
