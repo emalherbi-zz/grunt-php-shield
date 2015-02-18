@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>grunt-php-shield</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.2/normalize.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" >
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/mono-blue.min.css">
+  <link rel="stylesheet" href="css/app.css">
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <!--[if lt IE 10]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/"><strong>upgrade your browser</strong></a> to improve your experience.</p>
+  <![endif]-->
+
+  <a href="https://github.com/emalherbi/grunt-php-shield"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+
+  <div class="container">
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+      </div>
+    </div>
+
+  	<div class="row clearfix">
+  		<div class="col-md-12 column">
+
+        <div class="page-header" >
+          <h1>grunt-php-shield</h1>
+          <h4>Build automatic phpShield or Encrypt your files in Base 64!</h4>
+        </div>
+
+        <div class="page-header" style="border-bottom: 0 none;" >
+          <a href="https://nodei.co/npm/grunt-php-shield/"><img src="https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true"></a>
+        </div>
+
+        <div class="page-header" >
+        	<h1>Example:</h1>
+          <h2>Using base64.</h2>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row clearfix">
+      <div class="col-md-6 column">
+
+<pre><code class="php" >&lt;?php
+
+require_once("Example.php");
+
+class ExampleController
+{
+    private $model;
+
+    public function __construct() {
+      $this->model = new Example();
+    }
+
+    public function all( $params ) {
+      return $this->model->all( $params );
+    }
+
+    public function edit( $params ) {
+      return $this->model->edit( $params );
+    }
+
+    public function save( $params ) {
+      parse_str( $params['form'], $params );
+      return $this->model->save( $params );
+    }
+
+    public function remove( $params ) {
+      return $this->model->remove( $params );
+    }
+}
+
+$controller = new ExampleController();
+
+$method = $_POST['method'];
+$params = $_POST;
+
+echo json_encode( $controller->$method($params) );
+</code></pre>
+
+      </div>
+      <div class="col-md-6 column">
+
+<pre><code class="php" >&lt;?php
+eval(urldecode(base64_decode("ZXZhbCh1cmxkZWNvZGUoYmFzZTY0X2RlY29kZSglMjJKVEJCSlRCQmNtVnhkV2x5WlY5dmJtTmxLQ1V5TWtWNFlXMXdiR1V1Y0dod0pUSXlLU1V6UWlVd1FTVXdRV05zWVhOekpUSXdSWGhoYlhCc1pVTnZiblJ5YjJ4c1pYSWxNRUVsTjBJbE1FRWxNakFsTWpBbE1qQWxNakJ3Y21sMllYUmxKVEl3SlRJMGJXOWtaV3dsTTBJbE1FRWxNRUVsTWpBbE1qQWxNakFsTWpCd2RXSnNhV01sTWpCbWRXNWpkR2x2YmlVeU1GOWZZMjl1YzNSeWRXTjBLQ2tsTWpBbE4wSWxNRUVsTWpBbE1qQWxNakFsTWpBbE1qQWxNakFsTWpSMGFHbHpMU1V6UlcxdlpHVnNKVEl3SlRORUpUSXdibVYzSlRJd1JYaGhiWEJzWlNncEpUTkNKVEJCSlRJd0pUSXdKVEl3SlRJd0pUZEVKVEJCSlRCQkpUSXdKVEl3SlRJd0pUSXdjSFZpYkdsakpUSXdablZ1WTNScGIyNGxNakJoYkd3b0pUSXdKVEkwY0dGeVlXMXpKVEl3S1NVeU1DVTNRaVV3UVNVeU1DVXlNQ1V5TUNVeU1DVXlNQ1V5TUhKbGRIVnliaVV5TUNVeU5IUm9hWE10SlRORmJXOWtaV3d0SlRORllXeHNLQ1V5TUNVeU5IQmhjbUZ0Y3lVeU1Da2xNMElsTUVFbE1qQWxNakFsTWpBbE1qQWxOMFFsTUVFbE1FRWxNakFsTWpBbE1qQWxNakJ3ZFdKc2FXTWxNakJtZFc1amRHbHZiaVV5TUdWa2FYUW9KVEl3SlRJMGNHRnlZVzF6SlRJd0tTVXlNQ1UzUWlVd1FTVXdPU1V3T1NVeU1DVXlNSEpsZEhWeWJpVXlNQ1V5TkhSb2FYTXRKVE5GYlc5a1pXd3RKVE5GWldScGRDZ2xNakFsTWpSd1lYSmhiWE1sTWpBcEpUTkNKVEJCSlRJd0pUSXdKVEl3SlRJd0pUZEVKVEJCSlRCQkpUSXdKVEl3SlRJd0pUSXdjSFZpYkdsakpUSXdablZ1WTNScGIyNGxNakJ6WVhabEtDVXlNQ1V5TkhCaGNtRnRjeVV5TUNrbE1qQWxOMElsTUVFbE1qQWxNakFsTWpBbE1qQWxNRGx3WVhKelpWOXpkSElvSlRJd0pUSTBjR0Z5WVcxekpUVkNKMlp2Y20wbkpUVkVKVEpESlRJd0pUSTBjR0Z5WVcxekpUSXdLU1V6UWlVd1FTVXdPU1V3T1NVeU1DVXlNSEpsZEhWeWJpVXlNQ1V5TkhSb2FYTXRKVE5GYlc5a1pXd3RKVE5GYzJGMlpTZ2xNakFsTWpSd1lYSmhiWE1sTWpBcEpUTkNKVEJCSlRJd0pUSXdKVEl3SlRJd0pUZEVKVEJCSlRCQkpUSXdKVEl3SlRJd0pUSXdjSFZpYkdsakpUSXdablZ1WTNScGIyNGxNakJ5WlcxdmRtVW9KVEl3SlRJMGNHRnlZVzF6SlRJd0tTVXlNQ1UzUWlVd1FTVXdPU1V3T1NVeU1DVXlNSEpsZEhWeWJpVXlNQ1V5TkhSb2FYTXRKVE5GYlc5a1pXd3RKVE5GY21WdGIzWmxLQ1V5TUNVeU5IQmhjbUZ0Y3lVeU1Da2xNMElsTUVFbE1qQWxNakFsTWpBbE1qQWxOMFFsTUVFbE4wUWxNRUVsTUVFbE1qUmpiMjUwY205c2JHVnlKVEl3SlRORUpUSXdibVYzSlRJd1JYaGhiWEJzWlVOdmJuUnliMnhzWlhJb0tTVXpRaVV3UVNVd1FTVXlORzFsZEdodlpDVXlNQ1V6UkNVeU1DVXlORjlRVDFOVUpUVkNKMjFsZEdodlpDY2xOVVFsTTBJbE1FRWxNalJ3WVhKaGJYTWxNakFsTTBRbE1qQWxNalJmVUU5VFZDVXpRaVV3UVNVd1FXVmphRzhsTWpCcWMyOXVYMlZ1WTI5a1pTZ2xNakFsTWpSamIyNTBjbTlzYkdWeUxTVXpSU1V5TkcxbGRHaHZaQ2dsTWpSd1lYSmhiWE1wSlRJd0tTVXpRaVV3UVElM0QlM0QlMjIpKSklM0I=")));
+</code></pre>
+
+      </div>
+    </div>
+	</div>
+
+  <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
