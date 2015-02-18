@@ -25,15 +25,8 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     php_shield: {
-      crypto: {
+      shield: {
         options: {
-          log : true,
-
-          base64 : true,
-          encodingLevelStart : 2,
-          encodingLevelEnd : 5,
-          notEncode: [ 'css', 'js', 'img', 'view', 'config', 'index.php' ],
-
           path_exe: 'D:\\PHPShield\\encoder',
           V4 : false,
           V5_0 : true,
@@ -41,6 +34,20 @@ module.exports = function(grunt) {
           V5_3 : true,
           stop_on_error : true,
           strict_errors : true
+        },
+        files: [{
+          src: ['**'],
+          dest: 'tmp/app',
+          cwd: 'test/fixtures/app'
+        }]
+      },
+      base64: {
+        options: {
+          log : true,
+          base64 : true,
+          encodingLevelStart : 10,
+          encodingLevelEnd : 15,
+          notEncode: [ 'css', 'js', 'img', 'view', 'config', 'index.php' ],
         },
         files: [{
           src: ['**'],
@@ -66,9 +73,10 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['php_shield', 'nodeunit']);
+  grunt.registerTask('test_shield', ['php_shield:shield', 'nodeunit']);
+  grunt.registerTask('test_base64', ['php_shield:base64', 'nodeunit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test']);
+  grunt.registerTask('default', ['jshint', 'test_base64']);
 
 };
