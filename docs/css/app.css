@@ -1,0 +1,35 @@
+/* app css stylesheet */
+.browsehappy {
+  background: rgb(14,14,14); /* Old browsers */
+  background: -moz-linear-gradient(-45deg,  rgba(14,14,14,1) 20%, rgba(125,126,125,1) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(20%,rgba(14,14,14,1)), color-stop(100%,rgba(125,126,125,1))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(-45deg,  rgba(14,14,14,1) 20%,rgba(125,126,125,1) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(-45deg,  rgba(14,14,14,1) 20%,rgba(125,126,125,1) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(-45deg,  rgba(14,14,14,1) 20%,rgba(125,126,125,1) 100%); /* IE10+ */
+  background: linear-gradient(135deg,  rgba(14,14,14,1) 20%,rgba(125,126,125,1) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0e0e0e', endColorstr='#7d7e7d',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+  color: #FFFFFF;
+  margin: 0 0 1em;
+  padding: 0.2em 1em;
+}
+
+body {
+    padding-bottom: 20px;
+    padding-top: 20px;
+}
+.navbar {
+    margin-bottom: 20px;
+}
+
+/* CSS TABLE */
+
+/* all table cursor pointer */
+table {
+	cursor: pointer;
+}
+/* all table columns center */
+table thead tr th,
+table tbody tr td {
+	text-align: center;
+}

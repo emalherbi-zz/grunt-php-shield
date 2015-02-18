@@ -1,4 +1,4 @@
-# grunt-php-shield
+# [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
 
 > Build automatic phpShield or Encrypt your files in Base 64!
 
@@ -195,3 +195,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-21   v0.2.3   not Encode Files/Folders. <br/>
 2014-10-21   v0.2.4   Add JS Escape and chalk. <br/>
 2014-10-21   v0.2.5   Using base64, add a trim on files encrypto <br/>
+2014-10-21   v0.2.6   Add a github page Example <br/>

@@ -135,7 +135,7 @@ module.exports = function(grunt) {
     var encrypto = function(str, levelStart, levelEnd) {
       var level = (levelStart === 0 || levelEnd === 0) ?
         Math.floor((Math.random() * 10) + 1)
-        : level = Math.floor(Math.random() * (levelEnd - levelStart)) + levelStart;
+        : Math.floor(Math.random() * (levelEnd - levelStart)) + levelStart;
 
       if (options.log) {
         writeln(chalk.bold.green("             => Random: " + level + "x" + " "));

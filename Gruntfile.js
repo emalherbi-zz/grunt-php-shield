@@ -12,6 +12,7 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+
     jshint: {
       all: [
         'Gruntfile.js',
@@ -45,8 +46,8 @@ module.exports = function(grunt) {
         options: {
           log : true,
           base64 : true,
-          encodingLevelStart : 10,
-          encodingLevelEnd : 15,
+          encodingLevelStart : 2,
+          encodingLevelEnd : 5,
           notEncode: [ 'css', 'js', 'img', 'view', 'config', 'index.php' ],
         },
         files: [{
@@ -60,6 +61,15 @@ module.exports = function(grunt) {
     // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
+    },
+
+    /* commit on gh-pages github */
+    'gh-pages': {
+      options: {
+        base: 'docs/',
+        message: 'auto-generated commit'
+      },
+      src: ['**/*']
     }
 
   });
@@ -70,6 +80,10 @@ module.exports = function(grunt) {
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadNpmTasks('grunt-gh-pages');
+
+  // Publish to GitHub Pages with Grunt
+  grunt.registerTask('ghpages', ['gh-pages']);
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
