@@ -101,7 +101,67 @@ eval(urldecode(base64_decode("ZXZhbCh1cmxkZWNvZGUoYmFzZTY0X2RlY29kZSglMjJKVEJCSl
 
       </div>
     </div>
-	</div>
+
+   	<div class="row clearfix">
+  		<div class="col-md-12 column">
+		  <div class="page-header" >
+			<h2>Using phpShield.</h2>
+        </div>
+      </div>
+    </div>
+	
+    <div class="row clearfix">
+      <div class="col-md-6 column">
+
+<pre><code class="php" >&lt;?php
+
+require_once("Example.php");
+
+class ExampleController
+{
+    private $model;
+
+    public function __construct() {
+      $this->model = new Example();
+    }
+
+    public function all( $params ) {
+      return $this->model->all( $params );
+    }
+
+    public function edit( $params ) {
+      return $this->model->edit( $params );
+    }
+
+    public function save( $params ) {
+      parse_str( $params['form'], $params );
+      return $this->model->save( $params );
+    }
+
+    public function remove( $params ) {
+      return $this->model->remove( $params );
+    }
+}
+
+$controller = new ExampleController();
+
+$method = $_POST['method'];
+$params = $_POST;
+
+echo json_encode( $controller->$method($params) );
+</code></pre>
+
+      </div>
+      <div class="col-md-6 column">
+
+<pre><code class="php" >&lt;?php @"phpSHIELD"; //v8.1
+if(!function_exists('phpshield_load')){$__v=phpversion();$__x=explode('.',$__v);$__n=$__x[0]*10000+$__x[1]*100+$__x[2];$__u=strtolower(substr(php_uname(),0,3));$__f=$__f0='ixed.'.substr($__v,0,strpos($__v,'.',3)).'.'.$__u;$__ff=$__ff0='ixed.'.$__v.'.'.$__u;$__ed=ini_get('extension_dir');if(!$__e=realpath($__ed)) die('extension_dir does not exist: '.$__ed);if($__n<50205){$__d=getcwd();if(@$__d[1]==':'){$__d=str_replace('\\','/',substr($__d,2));$__e=str_replace('\\','/',substr($__e,2));}$__e.=($__h=str_repeat('/..',substr_count($__e,'/')));$__f='/ixed/'.$__f;$__ff='/ixed/'.$__ff;while(!file_exists($__e.$__d.$__ff) && !file_exists($__e.$__d.$__f) && strlen($__d)>1){$__d=dirname($__d);}if (file_exists($__e.$__d.$__ff)) dl($__h.$__d.$__ff);else if (file_exists($__e.$__d.$__f)) dl($__h.$__d.$__f);}if(!function_exists('phpshield_load')){if(file_exists($__e.'/'.$__ff0)) dl($__ff0);else if(file_exists($__e.'/'.$__f0)) dl($__f0);}if(!function_exists('phpshield_load')){die('PHP script <B>'.__FILE__.'</B> is protected by <A HREF="http://www.phpshield.com/">phpSHIELD</A> and requires the phpSHIELD loader <B>'.$__f0.'</B>. The phpSHIELD loader has not been installed, or is not installed correctly. Please find the required loader within phpSHIELD installation directory or visit the <A HREF="http://www.phpshield.com/loaders/">phpSHIELD php encoder</A> site to download it.');exit();}}return phpshield_load('D16A83D584654D22AAQAAAAQAAAABHgAAACABAAAAAAAAAD/Oi6bde4Ec2FZ8OfbTMDmB0xmNr70TSJZvokGqIeW4UQeaNdArlTteGu/cG/CzTzIjmRvY/em6RbXfHWVPeTTTZWSikThzjzCDWKYmVkeANSwM0x2Vihre6hKH/2PWV9WIR/le5YUWeSElcBG9LXpG8dZtVu7/Kz1BQAAANgEAAC2L4GUfBlniCEewrtKUp7fCijyI//0rnftQo7lgMRumKdf8Yzl/9oL0KtDbVUyEW/l9DG8yaCB7P4Z/Jm1S/m/ZPsYzvM9ZZgqTPy+vv1BSyfgpIh9D+3c8XYDEP+YD/d6vESXMKhuhJJ3WPta9PmMp4n+6uqqNtWVK5/0qZRwkkJL0x2V9bQXBULSSFq+a9CPsD0gjz+lRnUlQahdD4iHoRpNhICTUsM6KqTApZbA+X5Ved4dmLVzC2+NafrvNmllkokATy4uOceMZ+WsEycfOETQBb3GYmSaEHW8vgD6ckBeXrHtgsroSQZLJ0bB4W+ghhTMnXW/v7lvyDLPsZRXcarkDfi/mp1z1eiszTIYYn3htgeMcveLcNSqMgjsn7CDaNKpnxIEummf9gKTp1WrJokqO0WcILAdiO7YnG3z4cxMku8vThlzyfpXql0wF5cHDNF2aFj1bhcdSkzQ5+w63nnjJPLR4IwWrf5oJxmvbZdCV6MjM/H+nQchhdewVOkPkoNT2SiKWVaeQJZjaBV6vu77GDg+1pJDpjooi+JkYWqPG+8Tum42mNt3QWIKIJORK+onkoGjAjQUm1m6EqK3sfodQ2UhsA2qa/RkNpmtRCyMoy1FBBrkiEr3Bp3C6W3WzHLvYgeyae7P3Tvj1JvXA4WYnGNXf0Euhfb0TTmwqIRH61dQxEWlkCbD1uCyb93+IDktvUK3IryjzzhljhWkwVLe9aIRNDsbS11YAl2Z+zVlZS/pcmT+Gdyn/XZZUOspGAdu3UdkrHivcYZRD87MBZKV+OAGJQPpvw8hOm4gim1dFVFkBbbUcgZV2IanqIzDUZ2DeGfsx28uwa/BQUrsQz5w3TxMy43P7oV7wT5PnWX2PEmnhyDNB6W+sUl4h8NWeNOkdfngksYzn6MBPQ1GM4roMQZHb66sHs2iMmSX2mYBZURq2m4lZ8ZOTJw8pe835+BvdMSuYluB+KNc8NZdAOYKOjq+jlhDueZKBWhMh6XfpUostJ/EHOPSF4bjl1cpVSBrmbqhtG4B+/oZl3g+lkjs5WStwcu4OAPWRO5A5hEO0di6VQGcAwTwGD+M4YKjcYEckglTtlDAbxMOIrwosRihezL+yAXCpi7Cmhe+atiHHEm3qAOFhJinJ5SH+gUGMrK3IESVEvMckPejKRpcxg1KE19tcqepLxBlnsFIOnkHpD6fHyQplYFyFqZ3qG1HJRaNzFyHHPwocDqTcu7Y4J/jROESiy39rwZgeaIZIlDG68niqfY4/LbqcPzs/5OaNFhB1nK0Bp5gxCsZU+qKWOTPVm2BMlpBV72B16lRCGLFm0zCwh/tX9FH0s96ORL3FynqnFCO8Z0KiPIEggI10e7plyCmfiPVyOn1LHCdtWA6lMYlyMVi81SdFsZHSSt5PtepseqKRFOtUWw76+VtMkeSiXZQoh7aYa6Iko8pgOOHnaAL2l86yj7K+sJGbvz2R7clYG8nSVWy8d8aqIusaLhWylcdigCFkNNr56BR2PZwLd5FNFCrVU9aUE3ZSo05OTdwhBiGKxeHo++w22cG+ca8hzTFtyu8D/79BuNN8WpQHTa5lxmdFo/w7ukr01HezwjHu/zWjDQPSmPqmweLHWMlMIvDjZ2XNwrxoqEAWOPvjZJCax1ANAAAABgEAAAaKfEa/lcEnl471pXvp+Hg+x+4p6saOcGlTirudFMUy1Lxiyv2gNn/6XDvRNDbRdBMjBFud9qc35HaI50cAjPFnBG3/eu5YXHnv3850zlxCTEBropuNSntt3aOtguTLwF7W0vBUeIZI6DSLbMViFMjTSBwTeF+nEe27H4cZ+pVcQGZ/M9px5RLAyIbjqTEUhVnDZ+DTS50zcHuNW5JzZTGLNT5werC7X/KUYMZ3yjSgYL4CvPqoTjCzJp3zhE1W/uqR76Ff3P15euwq4zdgGntpfGt/IOCgccESDehqseOCeU/Vb6FYdyxAdScvBovnQvMnBduig1/jDdOZC2ahRFl4F7vhoTABce5JDKor5FM2BqRFqNSjt8MwE1u7juyfVpXnmxRxv2QvlL7R3CnNZCxiRl0kpG4CWCteiS08TmQXpgZrrX1ugqJJQegGYWdvV/Es4dqt8E+m03iZXA6iOO6ddCdnITDmf4r3pfy1rpwKImeguQmLYTkQu4uF+/fo0oNqF9x4R8HNRdnpycCkrP9TEkpvnVHKv4tRpJc6wwaOvSSBn1yA6Ib9/ymgQhgCvpsQGJKh6ceFEo9Kh9tDuyxi7fCEFO3+aJqqXwtplXtQnIuWxGspXIMqV95hW4K2uNwlc51gmFh5DbgH3hYU8RNcVtKJTQ7RUSVi73P1g462F16Dr4Y+j6Rx9XIJZyuLrCIUhvysuHDCidfcg6MmBfEYYsITcJJPjCuDEZhYLfqn0Y84QjS2gcBG57JIQY+C8bCMQTvpkQfCNcifmq4DODqqdI2vdUVsU5ZEwPol47MI+j3pxGTjH9tNjjuikHJubqNmkkA6fVgAkdICmfkk+cl1vcxxO8cMBxw5cl6NInBq25djhPPYa+PHzmgX3KwQIMS3UyLeaAcrUdGPI23jH1wRGWo/HQ5mqdUjMp6hvjF9AhlWm2MTu/sjcqa0lc2Pl8gkiNs/fgZ2AYNlF3ynHYgZlNPgNdiumU3ZoXtWjcKENNWoLLtePwHQw0g14Rt2h3xcYcz98SMAmMdTwfZXdmq0pREaXN7qhOcFwloQxWdwrDxFdoH0Tu5EWj5xCwRSp8S1J7F+QucyZLcmXg85Yd3oaNLk2330GUQZ6IPrKF9tPgjK+Msz3m4kCTcVkKqPMH1vUZ3f5tfVvb0Gj84c1FU/6eHkU46OmaVuBcwb+qF/5YmOEfw4ungZN/XOh0LHrPH1UdWkA0ksyme9LwX8A5qmIbbvYJSLyVbgqtrn/9kTsmo3GP6x5AdMTvIHRrvYFCW80eIYYg/fPAg0epRmQSggCsDDFCWPRukdrc5asWcGqUZjXIy7DQ0GBFsboe96U/BOhzfx8IGS08l6CYYpIfwpE3JP1mQ/FUi+3pdpqzNZOWXkxAP1P4dNQAAACAEAAA3xLIRW6UiahnLiTHtz/qAjnEDUYhzHHFBontJ/c2yKHWIwEapYOl9lzmyWPh0QfUDzbWPvLGInILaIMaF+kkMsbsFrhA5n3emZQY/XDwgPj6nM4Qrvh2+TVgbRDsLQ2O5VUloRJEkQIrBYYOgSMbYCjlyMv+Fh6fQxfMEBIp7zDSYhebkNGd4VuFtKgyTYWZVtqTz9sC7V9cTsir8Y/cOp2Xzk4j4u0MFOWuo4hxgr0RcC0AtlhaAwwhfoEnrVXUfh9EJK6DJamHekRhiXhpMx4n3LTvpW/f1pZQns2Q1WhXyOWkd143eEJW7PGs8cQl7j/p3P3mO/nZcQ1GY9eyF4F2Ypgyc2wC8DW/Dw3NFcKK3EcFvu2zOHU8/qWDC3We4h1eJbFlZSR7pN10osXeA5IktvaHwSPf6u9+0k7oSr6VC65eswkAI63nUar2uFsLQD/5qKEHMpI3vC+m36ApI/j9XpBOGoPuzabbhx821aSgdoOADikEX0daN/xdihmYy7pqLOktN4ihaeWwMJbe/ERW7dWzOazdQYX+VSPKFUxmfWGpA2zzcxHbiVwEqvi/L+GVkYvnwomxfmbzzeJWTqYo8rGFm2S4kbxTuSVWSI6+gGJ0lDBAphMzKvZkO2zHHc54nvbJgzx+PTyNHO66sx3L/CZUFqp18buClu6+Hp+Gp4QbpvydGWgcc78d0wly7dbEKLESsAsQ8hpm93BYHS0EoxIvloQ1hrE3nBAGgYQEjToxVxUPk1OEBqgtzwIp+Fk91Z45dhryRFDBGFucpeWBMm1ozljUUlIuhGRAc3pU9HIwX95NWKGuiThJhQ0f1z0Ef2CXXNu0fb1GFenbl6jff2rKILv/Lkbyeehm4O5mv9KfQ63j0yz30hqpdLBPNVeYp9emje/JdGRqTkTWVwWeMVTm2VTN4lbF1fAEfeKs86SNbVYwM1Tr8ajQohMoEj3sUjvbyY7x54CpE818Sso1qODWdX9bqLEAxL37yO6ZiWFPzhNSOD7lq4+3lD6UWWFbaUoN7ZfmWhVBL9ODiz+BqTgKtmHZ1nG2S7ssum3FRU8VDlVwFcpo3TDbfjvomz48pW9qlGv3O9zYCzbmqzfqgqHQKm79DYXWL8mzq9wd2uiF+TqKlipjC0Wavj3HOs/Bl0P9ghX/kWxdbBjN3EQnnSClIMR3kHNeaXqiKM70wY22L6FfmG2Akdx5aI6Utbg6UXIm/nq9iJC/kCkhKAEyF+gNKUAeF91combn6xj/YK7HUBcc9kx0Z+Ueikmy2onxBQWg8Rxrn5MT64eI4+aW41nLGuzs+2fO/e7l6Fde7Memt7uctT7EL41sUtGC3o6N7rryduKEjm2Ezzv3Ll99b8GhApKn/gHILUYlAQv4m9aW2ZDLqpsnkMqo7lXQAAAAA');
+?&gt;
+</code></pre>
+
+      </div>
+    </div>	
+  </div>
 
   <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>

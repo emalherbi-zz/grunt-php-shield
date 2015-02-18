@@ -1,8 +1,10 @@
-# [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
+# grunt-php-shield
 
 > Build automatic phpShield or Encrypt your files in Base 64!
 
 [![NPM](https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-php-shield/)
+
+Example: [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
 
 # Getting Started
 
