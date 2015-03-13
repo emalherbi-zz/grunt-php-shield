@@ -25,7 +25,7 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    php_shield: {
+    phpShield: {
       shield: {
         options: {
           path_exe: 'D:\\PHPShield\\encoder',
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
           V5_0 : true,
           V5_2 : true,
           V5_3 : true,
-          stop_on_error : true,
+          stop_on_error : false,
           strict_errors : true
         },
         files: [{
@@ -87,10 +87,10 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test_shield', ['php_shield:shield', 'nodeunit']);
-  grunt.registerTask('test_base64', ['php_shield:base64', 'nodeunit']);
+  grunt.registerTask('testShield', ['phpShield:shield', 'nodeunit']);
+  grunt.registerTask('testBase64', ['phpShield:base64', 'nodeunit']);
 
   // By default, lint and run all tests.
-  grunt.registerTask('default', ['jshint', 'test_base64']);
+  grunt.registerTask('default', ['jshint', 'testBase64']);
 
 };

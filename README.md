@@ -1,10 +1,24 @@
 # grunt-php-shield
 
-> Build automatic phpShield or Encrypt your files in Base 64!
+> Hey there!
+>
+> Please. If you liked the project give me a feedback.
+>
+> Do you think this project is useful in general?
+> Do you have any product feature suggestion or things that we can improve?
+>
+> I would love to hear what you have to say about it. Also, please do not forget to star the repository, if you like it. :)
+>
+> Thanks for your time!
+>
+> Regards,
+> Eduardo Malherbi.
+
+# Build automatic phpShield or Encrypt your files in Base 64!
 
 [![NPM](https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-php-shield/)
 
-GitHub Page Example: [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
+Example: [grunt-php-shield](http://emalherbi.github.io/grunt-php-shield/)
 
 # Getting Started
 
@@ -22,15 +36,15 @@ Once the plugin has been installed, it may be enabled inside your Gruntfile with
 grunt.loadNpmTasks('grunt-php-shield');
 ```
 
-# The "php_shield" task
+# The "phpShield" task
 
 ## Overview
 
-In your project's Gruntfile, add a section named `php_shield` to the data object passed into `grunt.initConfig()`.
+In your project's Gruntfile, add a section named `phpShield` to the data object passed into `grunt.initConfig()`.
 
 ```js
 grunt.initConfig({
-  php_shield: {
+  phpShield: {
     base64: {
       options: {
         ...
@@ -51,7 +65,7 @@ grunt.initConfig({
 
 ```js
 grunt.initConfig({
-  php_shield: {
+  phpShield: {
     base64: {
       options: {
         log : true,
@@ -70,13 +84,13 @@ grunt.initConfig({
 });
 ```
 
-## Or use [phpSHIELD](http://www.phpshield.com/) <br />
+## Or use [phpSHIELD](http://www.phpshield.com/)(Only Windows) <br />
 
 [1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
 
 ```js
 grunt.initConfig({
-  php_shield: {
+  phpShield: {
     shield: {
       options: {
         path_exe: 'D:\\PHPShield\\encoder',

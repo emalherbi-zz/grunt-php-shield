@@ -8,31 +8,30 @@
 
 'use strict';
 
-var path = require("path");
-var rimraf = require('rimraf');
-var btoa = require('btoa');
-var cmd = require("cmd-exec").init();
-var querystring = require('querystring');
-var chalk = require('chalk');
-
 module.exports = function(grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
+  var task = function() {
 
-  grunt.registerMultiTask('php_shield', 'Build automatic php shield', function() {
+    var path = require("path");
+    var rimraf = require('rimraf');
+    var btoa = require('btoa');
+    var querystring = require('querystring');
+    var chalk = require('chalk');
+    var exec = require('child_process').exec;
 
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       log : true,
 
-      /* Base64 */
+      // Base64
       base64 : false,
       encodingLevelStart : 0,
       encodingLevelEnd : 0,
       notEncode : null,
 
-      /* PhpShield */
+      // PhpShield
       path_exe : '',
       V4 : true,
       V5_0 : true,
@@ -42,7 +41,7 @@ module.exports = function(grunt) {
       strict_errors : true
     });
 
-    /***************************************/
+    // ***************************************
 
     // Grunt log ln
     var writeln = function(str) {
@@ -54,7 +53,7 @@ module.exports = function(grunt) {
       grunt.log.write(str);
     };
 
-    /***************************************/
+    // ***************************************
 
     var Utils = {
 
@@ -80,7 +79,7 @@ module.exports = function(grunt) {
       }
     };
 
-    /***************************************/
+    // ***************************************
 
     var base64 = {
 
@@ -129,7 +128,7 @@ module.exports = function(grunt) {
       }
     };
 
-    /***************************************/
+    // ***************************************
 
     // Encrypto Php Files
     var encrypto = function(str, levelStart, levelEnd) {
@@ -149,30 +148,31 @@ module.exports = function(grunt) {
       return str;
     };
 
-    /***************************************/
+    // ***************************************
 
     // Iterate over all specified file groups.
     this.files.forEach(function(f) {
 
-      /********************************/
-      /***   PHP SHIELD             ***/
-      /********************************/
+      // ********************************
+      // ***   PHP SHIELD             ***
+      // ********************************
 
       var phpShield = function() {
+
         var php_list_encoder = [];
         src.map(function (filename) {
           if (grunt.file.isDir(cwd + separator + filename)) {
-            grunt.file.mkdir( f.dest + separator + filename );
+            grunt.file.mkdir(f.dest + separator + filename);
           } else {
             grunt.file.copy(cwd + separator + filename, f.dest + separator + filename);
 
             if ('php' === Utils.getExtension(cwd + separator + filename)) {
-              php_list_encoder.push( f.dest + separator + filename );
+              php_list_encoder.push(f.dest + separator + filename);
             }
           }
 
-          if ( options.log ) {
-            writeln( f.dest + separator + filename );
+          if (options.log) {
+            writeln(f.dest + separator + filename);
           }
         });
 
@@ -190,22 +190,25 @@ module.exports = function(grunt) {
         // exec cmd command phpShield
         var command = options.path_exe+separator+'phpshield.exe '+strict_errors+' '+stop_on_error+' '+V4+' '+V5_0+' '+V5_2+' '+V5_3+' -b- @"'+options.path_exe+separator+'encodeShield"';
 
-        if ( options.log ) {
-          writeln( command );
+        if (options.log) {
+          writeln(command);
         }
 
-        cmd.exec(command, function(err, res) {
-          if (err) {
-            grunt.log.warn('Error: ' + err.message);
-          } else {
-            writeln(res.message);
+        var child = exec(command, function (error, stdout, stderr) {
+          writeln('stdout: ' + stdout);
+          writeln('stderr: ' + stderr);
+
+          if (error !== null) {
+            grunt.log.warn('phpShield exec error: ' + error);
           }
         });
+
+        return true;
       };
 
-      /********************************/
-      /***   PHP BASE64             ***/
-      /********************************/
+      // ********************************
+      // ***   PHP BASE64             ***
+      // ********************************
 
       var phpBase64 = function() {
         src.map(function (filename) {
@@ -229,6 +232,8 @@ module.exports = function(grunt) {
             return;
           }
         });
+
+        return true;
       };
 
       writeln(chalk.blue.bold('---------------------------'));
@@ -270,16 +275,23 @@ module.exports = function(grunt) {
       }
 
       // encrypto files
+      var result = false;
       if (options.base64) {
-        phpBase64();
+        result = phpBase64();
       }
       else {
-        phpShield();
+        result = phpShield();
       }
 
       // Print a success message.
-      grunt.log.writeln('Build Successful!');
+      if (result) {
+        grunt.log.ok('Build Successful!');
+      }
     });
-  });
+  };
 
+  grunt.registerMultiTask('phpShield' , 'Build automatic phpShield or Encrypt your files in Base 64!', task);
+  grunt.registerMultiTask('phpshield' , 'Build automatic phpShield or Encrypt your files in Base 64!', task);
+  grunt.registerMultiTask('php_shield', 'Build automatic phpShield or Encrypt your files in Base 64!', task);
+  grunt.registerMultiTask('php_Shield', 'Build automatic phpShield or Encrypt your files in Base 64!', task);
 };
