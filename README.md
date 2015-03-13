@@ -84,7 +84,7 @@ grunt.initConfig({
 });
 ```
 
-## Or use [phpSHIELD](http://www.phpshield.com/)(Only Windows) <br />
+## Or use [phpSHIELD](http://www.phpshield.com/) (Only windows) <br />
 
 [1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
 
@@ -213,3 +213,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 2014-10-21   v0.2.5   Using base64, add a trim on files encrypto <br/>
 2014-10-21   v0.2.6   Add a github page Example <br/>
 2014-10-21   v0.2.7   Add phpShield in github page Example <br/>
+2015-03-13   v0.2.8   Add child process exec from npm to execute phpShield <br/>
