@@ -1,19 +1,5 @@
 # grunt-php-shield
 
-> Hey there!
->
-> Please. If you liked the project give me a feedback.
->
-> Do you think this project is useful in general?
-> Do you have any product feature suggestion or things that we can improve?
->
-> I would love to hear what you have to say about it. Also, please do not forget to star the repository, if you like it. :)
->
-> Thanks for your time!
->
-> Regards,
-> Eduardo Malherbi.
-
 # Build automatic phpShield or Encrypt your files in Base 64!
 
 [![NPM](https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-php-shield/)
@@ -55,7 +41,7 @@ grunt.initConfig({
         cwd: 'test/fixtures/app'
       }]
     }
-  },  
+  },
 });
 ```
 
@@ -193,24 +179,3 @@ A Boolean value that is used to report E_STRICT compiling errors.
 # Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
-
-# Release History
-
-2014-10-06   v0.1.1   Update readme. <br/>
-2014-10-06   v0.1.2   Update readme, add break line. <br/>
-2014-10-06   v0.1.3   Update readme. <br/>
-2014-10-07   v0.1.4   Add dependencies. <br/>
-2014-10-07   v0.1.5   Update devDependencies. <br/>
-2014-10-07   v0.1.6   Update dependencies. <br/>
-2014-10-07   v0.1.7   Update readme, add usage. <br/>
-2014-10-07   v0.1.8   Add usage, grunt-contrib-copy. <br/>
-2014-10-13   v0.1.9   Add base64 encryption. <br/>
-2014-10-13   v0.2.0   Update readme. <br/>
-2014-10-15   v0.2.1   Add encodingLevel, update readme. <br/>
-2014-10-15   v0.2.2   Clear Dir, Copy Files. <br/>
-2014-10-21   v0.2.3   not Encode Files/Folders. <br/>
-2014-10-21   v0.2.4   Add JS Escape and chalk. <br/>
-2014-10-21   v0.2.5   Using base64, add a trim on files encrypto <br/>
-2014-10-21   v0.2.6   Add a github page Example <br/>
-2014-10-21   v0.2.7   Add phpShield in github page Example <br/>
-2015-03-13   v0.2.8   Add child process exec from npm to execute phpShield <br/>

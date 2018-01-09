@@ -5,220 +5,77 @@
  * Copyright (c) 2014 Eduardo Malherbi Martins
  * Licensed under the MIT license.
  */
-
 'use strict';
-
 module.exports = function(grunt) {
-
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
+  // Please see the Grunt documentation for more information regarding task creation: http://gruntjs.com/creating-tasks
   var task = function() {
-
-    var path = require("path");
-    var rimraf = require('rimraf');
+    // ***************************************
+    var path = require('path');
     var btoa = require('btoa');
     var querystring = require('querystring');
     var chalk = require('chalk');
-    var exec = require('child_process').exec;
-
+    var exec = require('child_process').execSync;
+    // ***************************************
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      log : true,
-
-      // Base64
-      base64 : false,
-      encodingLevelStart : 0,
-      encodingLevelEnd : 0,
-      notEncode : null,
-
-      // PhpShield
-      path_exe : '',
-      V4 : true,
-      V5_0 : true,
-      V5_2 : true,
-      V5_3 : true,
-      stop_on_error : true,
-      strict_errors : true
+      log: true,
+      // base64
+      base64: false,
+      encodingLevelStart: 0,
+      encodingLevelEnd: 0,
+      notEncode: null,
+      // phpShield
+      path_exe: '',
+      V4: true,
+      V5_0: true,
+      V5_2: true,
+      V5_3: true,
+      stop_on_error: true,
+      strict_errors: true
     });
-
     // ***************************************
-
-    // Grunt log ln
-    var writeln = function(str) {
-      grunt.log.writeln(str);
-    };
-
-    // Grunt log
-    var write = function(str) {
-      grunt.log.write(str);
-    };
-
-    // ***************************************
-
     var Utils = {
-
-      // Create a dir
-      createDir : function(src, dest) {
+      // create a dir
+      createDir: function(src, dest) {
         if (grunt.file.isDir(src)) {
           grunt.file.mkdir(dest);
+          if (options.log) {
+            Utils.writeln(chalk.gray.bold('  create dir => ' + dest));
+          }
           return true;
         }
         return false;
       },
-
-      // Move files
-      copyFiles : function(src, dest) {
+      // move files
+      copyFiles: function(src, dest) {
         grunt.file.copy(src, dest);
+        if (options.log) {
+          Utils.writeln(chalk.gray('  copy files => ' + dest));
+        }
         return true;
       },
-
-      // Function to get the extension a filename
-      getExtension : function(filename) {
+      // function to get the extension a filename
+      getExtension: function(filename) {
         var ext = path.extname(filename || '').split('.');
         return ext[ext.length - 1];
+      },
+      // grunt log
+      writeln: function(str) {
+        grunt.log.writeln(str);
+        return true;
       }
     };
-
     // ***************************************
-
     var base64 = {
-
-      createDir : function(pathSrc, pathDest) {
-        var result = Utils.createDir(pathSrc, pathDest);
-        if (options.log && result) {
-          writeln(chalk.gray.bold('  Create Dir => ' + pathDest));
-        }
-        return result;
-      },
-      copyFiles : function(pathSrc, pathDest) {
-        var result = Utils.copyFiles(pathSrc, pathDest);
-
-        if (options.log && result) {
-          writeln(chalk.gray('  Copy Files => ' + pathDest));
-        }
-
-        return result;
-      },
-      encode : function(pathSrc, pathDest) {
-        if ( options.log ) {
-          writeln(chalk.bold.green('      Encode => ' + pathSrc));
-        }
-
-        var tmp = grunt.file.read( pathSrc );
-        tmp = tmp.replace("<?php", "");
-        tmp = tmp.replace("<?", "");
-        tmp = tmp.replace("?>", "");
-        tmp = encrypto(tmp, options.encodingLevelStart, options.encodingLevelEnd);
-
-        var file = "<?php";
-        file += "\r\n";
-        file += tmp;
-        file += "\r\n";
-        file += "?>";
-
-        grunt.file.write(pathDest, file);
-        return true;
-      },
-      notEncode : function(pathSrc, pathDest) {
-        var result = Utils.copyFiles(pathSrc, pathDest);
-        if (options.log && result) {
-          writeln(chalk.bold.red('  Not Encode => ' + pathDest));
-        }
-        return result;
-      }
-    };
-
-    // ***************************************
-
-    // Encrypto Php Files
-    var encrypto = function(str, levelStart, levelEnd) {
-      var level = (levelStart === 0 || levelEnd === 0) ?
-        Math.floor((Math.random() * 10) + 1)
-        : Math.floor(Math.random() * (levelEnd - levelStart)) + levelStart;
-
-      if (options.log) {
-        writeln(chalk.bold.green("             => Random: " + level + "x" + " "));
-      }
-
-      for (var i=0; i<level; i++) {
-        str = btoa(querystring.escape(str.replace(/\\>\s+\\</g,'')));
-        str = 'eval(urldecode(base64_decode("' + str + '")));';
-      }
-
-      return str;
-    };
-
-    // ***************************************
-
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-
-      // ********************************
-      // ***   PHP SHIELD             ***
-      // ********************************
-
-      var phpShield = function() {
-
-        var php_list_encoder = [];
-        src.map(function (filename) {
-          if (grunt.file.isDir(cwd + separator + filename)) {
-            grunt.file.mkdir(f.dest + separator + filename);
-          } else {
-            grunt.file.copy(cwd + separator + filename, f.dest + separator + filename);
-
-            if ('php' === Utils.getExtension(cwd + separator + filename)) {
-              php_list_encoder.push(f.dest + separator + filename);
-            }
-          }
-
-          if (options.log) {
-            writeln(f.dest + separator + filename);
-          }
-        });
-
-        // only windows
-        grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
-
-        var V4   = (options.V4  ) ? '-V4'   : '';
-        var V5_0 = (options.V5_0) ? '-V5.0' : '';
-        var V5_2 = (options.V5_2) ? '-V5.2' : '';
-        var V5_3 = (options.V5_3) ? '-V5.3' : '';
-
-        var stop_on_error = (options.stop_on_error) ? '--stop-on-error' : '';
-        var strict_errors = (options.strict_errors) ? '--strict-errors' : '';
-
-        // exec cmd command phpShield
-        var command = options.path_exe+separator+'phpshield.exe '+strict_errors+' '+stop_on_error+' '+V4+' '+V5_0+' '+V5_2+' '+V5_3+' -b- @"'+options.path_exe+separator+'encodeShield"';
-
-        if (options.log) {
-          writeln(command);
-        }
-
-        var child = exec(command, function (error, stdout, stderr) {
-          writeln('stdout: ' + stdout);
-          writeln('stderr: ' + stderr);
-
-          if (error !== null) {
-            grunt.log.warn('phpShield exec error: ' + error);
-          }
-        });
-
-        return true;
-      };
-
-      // ********************************
-      // ***   PHP BASE64             ***
-      // ********************************
-
-      var phpBase64 = function() {
-        src.map(function (filename) {
-          var pathSrc  = cwd    + separator + filename;
-          var pathDest = f.dest + separator + filename;
-
-          if (base64.createDir(pathSrc, pathDest)) {
+      init: function(src, cwd, dest, separator) {
+        src.map(function(filename) {
+          var pathSrc = cwd + separator + filename;
+          var pathDest = dest + separator + filename;
+          //
+          if (Utils.createDir(pathSrc, pathDest)) {
             return;
           }
-
+          //
           if ('php' === Utils.getExtension(pathSrc)) {
             if (pathSrc.match('(' + options.notEncode.join('|') + ')')) {
               base64.notEncode(pathSrc, pathDest);
@@ -227,71 +84,165 @@ module.exports = function(grunt) {
             }
             return;
           }
-
-          if (base64.copyFiles(pathSrc, pathDest)) {
+          //
+          if (Utils.copyFiles(pathSrc, pathDest)) {
             return;
           }
         });
-
         return true;
-      };
-
-      writeln(chalk.blue.bold('---------------------------'));
-      writeln(chalk.blue.bold('- Start Module PhpShield! -'));
-      writeln(chalk.blue.bold('---------------------------'));
-
+      },
+      encode: function(pathSrc, pathDest) {
+        if (options.log) {
+          Utils.writeln(chalk.bold.green('  encode => ' + pathSrc));
+        }
+        var tmp = grunt.file.read(pathSrc);
+        tmp = tmp.replace('<?php', '');
+        tmp = tmp.replace('<?', '');
+        tmp = tmp.replace('?>', '');
+        //
+        var level = (options.encodingLevelStart === 0 || options.encodingLevelEnd === 0) ?
+          Math.floor((Math.random() * 10) + 1) :
+          Math.floor(Math.random() * (options.encodingLevelEnd - options.encodingLevelStart)) + options.encodingLevelStart;
+        if (options.log) {
+          Utils.writeln(chalk.bold.green('             => random: ' + level + 'x' + ' '));
+        }
+        //
+        for (var i = 0; i < level; i++) {
+          tmp = btoa(querystring.escape(tmp.replace(/\\>\s+\\</g, '')));
+          tmp = 'eval(urldecode(base64_decode("' + tmp + '")));';
+        }
+        //
+        var file = '<?php';
+        file += '\r\n';
+        file += tmp;
+        file += '\r\n';
+        file += '?>';
+        grunt.file.write(pathDest, file);
+        return true;
+      },
+      notEncode: function(pathSrc, pathDest) {
+        var result = Utils.copyFiles(pathSrc, pathDest);
+        if (options.log && result) {
+          Utils.writeln(chalk.bold.white('  not encode => ' + pathDest));
+        }
+        return result;
+      }
+    };
+    var shield = {
+      init: function(src, cwd, dest, separator) {
+        var php_list_encoder = [];
+        src.map(function(filename) {
+          var pathSrc = cwd + separator + filename;
+          var pathDest = dest + separator + filename;
+          //
+          if (Utils.createDir(pathSrc, pathDest)) {
+            return;
+          }
+          //
+          Utils.copyFiles(pathSrc, pathDest);
+          //
+          if ('php' === Utils.getExtension(pathSrc)) {
+            if (filename.match('(' + options.notEncode.join('|') + ')')) {
+              if (options.log) {
+                Utils.writeln(chalk.bold.white('  not encode => ' + pathDest));
+              }
+            } else {
+              if (options.log) {
+                Utils.writeln(chalk.bold.green('  encode => ' + pathDest));
+              }
+              php_list_encoder.push(pathDest);
+            }
+          } else {
+            if (options.log) {
+              Utils.writeln(chalk.bold.white('  copy => ' + pathDest));
+            }
+          }
+        });
+        // only windows
+        grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
+        //
+        var V4 = (options.V4) ? '-V4' : '';
+        var V5_0 = (options.V5_0) ? '-V5.0' : '';
+        var V5_2 = (options.V5_2) ? '-V5.2' : '';
+        var V5_3 = (options.V5_3) ? '-V5.3' : '';
+        var stop_on_error = (options.stop_on_error) ? '--stop-on-error' : '';
+        var strict_errors = (options.strict_errors) ? '--strict-errors' : '';
+        //
+        // exec cmd command phpShield
+        var command = options.path_exe + separator + 'phpshield.exe ' + strict_errors + ' ' + stop_on_error + ' ' + V4 + ' ' + V5_0 + ' ' + V5_2 + ' ' + V5_3 + ' -b- @"' + options.path_exe + separator + 'encodeShield"';
+        if (options.log) {
+          Utils.writeln(command);
+        }
+        //
+        exec(command, function(error, stdout, stderr) {
+          if (error) {
+            grunt.log.warn('phpShield exec error: ' + error);
+          }
+          Utils.writeln('stdout: ' + stdout);
+          Utils.writeln('stderr: ' + stderr);
+        });
+        //
+        return true;
+      }
+    };
+    // ***************************************
+    // Iterate over all specified file groups.
+    this.files.forEach(function(f) {
+      //
+      Utils.writeln(chalk.blue.bold('--------------------'));
+      Utils.writeln(chalk.blue.bold('- Start PhpShield! -'));
+      Utils.writeln(chalk.blue.bold('--------------------'));
+      //
       var separator = '/';
       var src = null;
-
-      // create a cmd var even if not used to reduce errors
-      var cwd = '';
+      var cwd = '.' + separator;
+      var dest = '.' + separator;
+      //
       if (f.cwd) {
-        cwd = f.cwd;
+        cwd += f.cwd;
       }
-
+      if (f.dest) {
+        dest += f.dest;
+      }
       // validate if one option is defined.
       if (options.path_exe.trim() === '' && options.base64 === false) {
-        grunt.log.warn('The path_exe or base64 are not defined! Please defined one option.'); return false;
+        grunt.log.warn('The path_exe or base64 are not defined! Please defined one option.');
+        return false;
       }
-
       // validate if files exist.
       src = f.src.filter(function(filename) {
         if (!grunt.file.exists(cwd + separator + filename)) {
-          grunt.log.warn('Source file "' + cwd + separator + filename + '" not found.'); return false;
+          grunt.log.warn('Source file "' + cwd + separator + filename + '" not found.');
+          return false;
         }
         return true;
       });
-
       if (src === null) {
         return false;
       }
-
-      // clear dist
-      try {
-        rimraf.sync( f.dest );
-      } catch (e) {
-        grunt.log.error();
-        grunt.fail.warn('Unable to delete: "' + f.dest + '" file (' + e.message + ').', e);
-      }
-
-      // encrypto files
+      // crypto files
       var result = false;
       if (options.base64) {
-        result = phpBase64();
+        result = base64.init(src, cwd, dest, separator);
+      } else {
+        result = shield.init(src, cwd, dest, separator);
       }
-      else {
-        result = phpShield();
-      }
-
-      // Print a success message.
+      // print a success message.
       if (result) {
         grunt.log.ok('Build Successful!');
       }
     });
   };
-
-  grunt.registerMultiTask('phpShield' , 'Build automatic phpShield or Encrypt your files in Base 64!', task);
-  grunt.registerMultiTask('phpshield' , 'Build automatic phpShield or Encrypt your files in Base 64!', task);
-  grunt.registerMultiTask('php_shield', 'Build automatic phpShield or Encrypt your files in Base 64!', task);
-  grunt.registerMultiTask('php_Shield', 'Build automatic phpShield or Encrypt your files in Base 64!', task);
+  grunt.registerMultiTask('phpShield',
+    'Build automatic phpShield or Encrypt your files in base 64!',
+    task);
+  grunt.registerMultiTask('phpshield',
+    'Build automatic phpShield or Encrypt your files in base 64!',
+    task);
+  grunt.registerMultiTask('php_shield',
+    'Build automatic phpShield or Encrypt your files in base 64!',
+    task);
+  grunt.registerMultiTask('php_Shield',
+    'Build automatic phpShield or Encrypt your files in base 64!',
+    task);
 };
