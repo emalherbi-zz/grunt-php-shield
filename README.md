@@ -70,7 +70,7 @@ grunt.initConfig({
 });
 ```
 
-## Or use [phpSHIELD](http://www.phpshield.com/) (Only windows) <br />
+## Or use [phpShield](http://www.phpshield.com/) or [Source Guardian](https://www.sourceguardian.com/) <br />
 
 [1] - Sometimes is necessary to use a real path on your destination for phpShield. <br/>
 
@@ -80,13 +80,20 @@ grunt.initConfig({
     shield: {
       options: {
         path_exe: 'D:\\PHPShield\\encoder',
-        log : true,
-        V4 : false,
-        V5_0 : true,
-        V5_2 : true,
-        V5_3 : true,
+        log : false,
+        V4_0 : false, // phpshield
+        V5_0 : false, // phpshield
+        V5_2 : false, // phpshield
+        V5_3 : false, // phpshield
+        V5_4 : false, // source guardian
+        V5_5 : false, // source guardian
+        V5_6 : false, // source guardian
+        V7_0 : false, // source guardian
+        V7_1 : false, // source guardian
+        V7_2 : false, // source guardian
         stop_on_error : false,
-        strict_errors : false
+        strict_errors : false,
+        is_source_guardian: false
       },
       files: [{
         src: ['**'],
@@ -140,7 +147,7 @@ Default value: ``
 
 A string value that is used to especific path .exe.
 
-## options.V4
+## options.V4_0
 Type: `Boolean` <br/>
 Default value: `true`
 
@@ -163,6 +170,42 @@ Type: `Boolean` <br/>
 Default value: `true`
 
 A Boolean value that is used to enabled compiling php version 5.3.
+
+## options.V5_4
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.4.
+
+## options.V5_5
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.5.
+
+## options.V5_6
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 5.6.
+
+## options.V7_0
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 7.0.
+
+## options.V7_1
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 7.1.
+
+## options.V7_2
+Type: `Boolean` <br/>
+Default value: `true`
+
+A Boolean value that is used to enabled compiling php version 7.2.
 
 ## options.stop_on_error
 Type: `Boolean` <br/>

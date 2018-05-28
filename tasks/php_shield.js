@@ -18,7 +18,7 @@ module.exports = function(grunt) {
     // ***************************************
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      log: true,
+      log: false,
       // base64
       base64: false,
       encodingLevelStart: 0,
@@ -26,12 +26,19 @@ module.exports = function(grunt) {
       notEncode: null,
       // phpShield
       path_exe: '',
-      V4: true,
-      V5_0: true,
-      V5_2: true,
-      V5_3: true,
-      stop_on_error: true,
-      strict_errors: true
+      V4_0: false,
+      V5_0: false,
+      V5_2: false,
+      V5_3: false,
+      V5_4: false,
+      V5_5: false,
+      V5_6: false,
+      V7_0: false,
+      V7_1: false,
+      V7_2: false,
+      stop_on_error: false,
+      strict_errors: false,
+      is_source_guardian: false
     });
     // ***************************************
     var Utils = {
@@ -161,15 +168,32 @@ module.exports = function(grunt) {
         // only windows
         grunt.file.write(options.path_exe + separator + 'encodeShield', php_list_encoder.join('\n'));
         //
-        var V4 = (options.V4) ? '-V4' : '';
+        var V4_0 = (options.V4_0) ? '-V4' : '';
         var V5_0 = (options.V5_0) ? '-V5.0' : '';
         var V5_2 = (options.V5_2) ? '-V5.2' : '';
         var V5_3 = (options.V5_3) ? '-V5.3' : '';
+        var V5_4 = (options.V5_4) ? '-V5.4' : '';
+        var V5_5 = (options.V5_4) ? '-V5.5' : '';
+        var V5_6 = (options.V5_4) ? '-V5.6' : '';
+        var V7_0 = (options.V7_0) ? '-V7.0' : '';
+        var V7_1 = (options.V7_1) ? '-V7.1' : '';
+        var V7_2 = (options.V7_2) ? '-V7.2' : '';
+        //
         var stop_on_error = (options.stop_on_error) ? '--stop-on-error' : '';
         var strict_errors = (options.strict_errors) ? '--strict-errors' : '';
         //
         // exec cmd command phpShield
-        var command = options.path_exe + separator + 'phpshield.exe ' + strict_errors + ' ' + stop_on_error + ' ' + V4 + ' ' + V5_0 + ' ' + V5_2 + ' ' + V5_3 + ' -b- @"' + options.path_exe + separator + 'encodeShield"';
+        var command = '';
+        if (options.is_source_guardian) {
+          command += '"' + options.path_exe + separator + 'sgencoder.exe" ';
+        } else {
+          command += '"' + options.path_exe + separator + 'phpshield.exe" ';
+        }
+        command += strict_errors + ' ' + stop_on_error + ' ';
+        command += V4_0 + ' ' + V5_0 + ' ' + V5_2 + ' ' + V5_3 + ' ';
+        command += V5_4 + ' ' + V5_5 + ' ' + V5_6 + ' ' + V7_0 + ' ' + V7_1 + ' ' + V7_2 + ' ';
+        command += ' -b- @"' + options.path_exe + separator + 'encodeShield"';
+        //
         if (options.log) {
           Utils.writeln(command);
         }

@@ -24,12 +24,19 @@ module.exports = function(grunt) {
       shield: {
         options: {
           path_exe: 'D:\\PHPShield\\encoder',
-          V4: false,
-          V5_0: true,
+          V4_0: false,
+          V5_0: false,
           V5_2: true,
           V5_3: true,
+          V5_4: false,
+          V5_5: false,
+          V5_6: false,
+          V7_0: false,
+          V7_1: false,
+          V7_2: false,
           stop_on_error: false,
-          strict_errors: true
+          strict_errors: true,
+          is_source_guardian: false
         },
         files: [{
           src: ['**'],
