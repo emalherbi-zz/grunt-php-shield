@@ -1,7 +1,7 @@
 {
   "name": "grunt-php-shield",
   "description": "Build automatic phpShield or encrypt your files in Base64!",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "homepage": "https://github.com/emalherbi/grunt-php-shield",
   "author": {
     "name": "Eduardo Malherbi Martins",

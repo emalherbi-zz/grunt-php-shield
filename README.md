@@ -1,6 +1,6 @@
 # grunt-php-shield
 
-# Build automatic phpShield or Encrypt your files in Base 64!
+# Build automatic phpShield/Source Guardian or Encrypt your files in Base 64!
 
 [![NPM](https://nodei.co/npm/grunt-php-shield.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/grunt-php-shield/)
 
