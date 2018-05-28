@@ -1,7 +1,7 @@
 {
   "name": "grunt-php-shield",
   "description": "Build automatic phpShield or encrypt your files in Base64!",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://github.com/emalherbi/grunt-php-shield",
   "author": {
     "name": "Eduardo Malherbi Martins",
@@ -15,12 +15,10 @@
   "bugs": {
     "url": "https://github.com/emalherbi/grunt-php-shield/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "http://en.wikipedia.org/wiki/MIT_License"
-    }
-  ],
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://en.wikipedia.org/wiki/MIT_License"
+  }],
   "engines": {
     "node": ">= 0.8.0"
   },
@@ -45,6 +43,7 @@
     "gruntplugin",
     "php",
     "phpShield",
+    "Source Guardian",
     "shield",
     "base64",
     "encryption",
